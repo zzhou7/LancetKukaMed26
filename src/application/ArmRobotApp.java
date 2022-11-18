@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.inject.Inject;
+import javax.inject.Named;
 /**
  * Implementation of a robot application.
  * <p>
@@ -57,7 +58,7 @@ import javax.inject.Inject;
 @MedApplicationCategory(checkMastering = false)
 public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private LBRMed robot;
-  // @Named("ToolMed")
+  @Named("Tool")
   @Inject private Tool tool;
   @Inject private ITaskLogger logger;
   @Inject private IApplicationUI appUI;
