@@ -58,8 +58,9 @@ import javax.inject.Named;
 @MedApplicationCategory(checkMastering = false)
 public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private LBRMed robot;
-  @Named("Tool")
-  @Inject private Tool tool;
+  //@Named("Tool")
+  //@Inject 
+  private Tool tool;
   @Inject private ITaskLogger logger;
   @Inject private IApplicationUI appUI;
   @Inject private IApplicationControl appControl;
