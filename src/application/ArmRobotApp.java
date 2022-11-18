@@ -222,7 +222,6 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   public void run() {
     logger.info("Starting Application.");
     m_brakeTest = new BrakeTestHandler();
-    robot.getCapability(ObserverManager.class);
     m_processer = new ProtocolProcess(robot, logger, tool, observerManager);
     m_processer.setBrakeTestExecutor(m_brakeTest);
     m_processer.setApp(this);
