@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="ASCII"?>
 <core:World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.kuka.com/rapi2/geometry/core" id="_8GmbsGY7Ee2AwJ_VYXOlcw" name="World" lastModificationTime="2022-11-17T13:51:54.091+0800" defaultChildAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw" defaultParentAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw">
-  <rootFrame id="_8Gl0oWY7Ee2AwJ_VYXOlcw" name="ROOT" lastModificationTime="2022-11-17T13:51:54.091+0800"/>
+  <rootFrame id="_8Gl0oWY7Ee2AwJ_VYXOlcw" name="ROOT" lastModificationTime="2022-11-17T13:51:54.091+0800">
+    <childFrames id="d882da85-78bb-43ce-8cb6-9f757d41b16b" name="Base">
+      <parentFrameConnection xsi:type="core:StaticFrameConnection">
+        <transformation alphaRad="3.141592653589793"/>
+      </parentFrameConnection>
+    </childFrames>
+  </rootFrame>
   <childObjectConnections childObjectFrame="_8GwMsWY7Ee2AwJ_VYXOlcw" parentObjectFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw">
     <frameConnection xsi:type="core:StaticFrameConnection">
       <transformation betaRad="-0.5235987755982988"/>
@@ -11,6 +17,18 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
+      <childObjectConnections childObjectFrame="872e7dac-1248-4e72-b0d9-8931a1e49b3b" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+        <frameConnection xsi:type="core:StaticFrameConnection">
+          <transformation/>
+        </frameConnection>
+        <childObject xsi:type="core:Tool" id="6de3271f-621c-46c6-b534-f41c7afb86f9" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="872e7dac-1248-4e72-b0d9-8931a1e49b3b" defaultParentAttachmentFrame="872e7dac-1248-4e72-b0d9-8931a1e49b3b" transient="true" defaultMotionFrame="872e7dac-1248-4e72-b0d9-8931a1e49b3b">
+          <rootFrame id="872e7dac-1248-4e72-b0d9-8931a1e49b3b" name="ROOT"/>
+          <loadData mass="0.676">
+            <centerOfMass z="20.0"/>
+            <inertia/>
+          </loadData>
+        </childObject>
+      </childObjectConnections>
     </childObject>
   </childObjectConnections>
 </core:World>
