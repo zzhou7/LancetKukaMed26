@@ -39,7 +39,7 @@ public class BackgroundTask extends RoboticsAPICyclicBackgroundTask {
 				CycleBehavior.BEST_EFFORT);
 		
 		try {
-			soc = new UDPSocketForBackground("111",111);
+			soc = new UDPSocketForBackground("172.31.1.148", 30003);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

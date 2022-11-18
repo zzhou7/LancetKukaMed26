@@ -13,7 +13,7 @@ public class UDPSocketForBackground extends Thread {
 	public UDPSocketForBackground(String ip,int port) throws SocketException
 	{
 		ds = new DatagramSocket();
-		ds.connect(new InetSocketAddress("192.168.1.202", 30003));
+		ds.connect(new InetSocketAddress(ip, port));
 	}
 	
 	public void send(byte[] message) throws IOException
