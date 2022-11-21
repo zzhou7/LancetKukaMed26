@@ -91,8 +91,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
 		//logger.info(robot.getLoadData().toString());
-	 
-		//tool.addDefaultMotionFrame("cubeOrigin", Transformation.ofTranslation(0, 0, 66));
+		
+		//tool.addDefaultMotionFrame("cubeOrigin", Transformation.of(0, 0, 66));
 		//tool.addChildFrame("Finger", Transformation.ofTranslation(0, 48, 157));
 		//tool.addChildFrame("RobotUserTool", Transformation.ofTranslation(0, 200, 170));
 		

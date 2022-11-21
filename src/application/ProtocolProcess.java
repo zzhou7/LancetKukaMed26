@@ -50,6 +50,7 @@ import com.kuka.roboticsAPI.executionModel.CommandInvalidException;
 //import com.kuka.roboticsAPI.geometricModel.redundancy.IRedundancyCollection;
 import com.kuka.task.ITaskLogger;
 import com.kuka.threading.ThreadUtil;
+import com.sun.media.jfxmedia.logging.Logger;
 import functions.*;
 //import static com.kuka.roboticsAPI.motionModel.HRCMotions.*;
 
@@ -168,7 +169,7 @@ public class ProtocolProcess {
 			ret.setOperateType("MoveStop");
 			return ret;
 		}
-		//闆剁┖闂�
+		//闂嗗墎鈹栭梻锟�
 		else if (opType.equals("ZeroSpace"))
 		{
 			if (mc != null) {			
@@ -191,7 +192,7 @@ public class ProtocolProcess {
 			ret.setResultMsg("ZeroSpace_on ok");
 			return ret;
 		}
-		//纰版挒妫�娴�
+		//绾扮増鎸掑Λ锟藉ù锟�
 		else if (opType.equals("Extern_Force"))
 		{
 			double[] joint = bean.getJointPos();
@@ -209,7 +210,7 @@ public class ProtocolProcess {
 		    mc = m_robot.getFlange().moveAsync(ptp(jp).setJointVelocityRel(0.3* speedLevel)
 		    		.setJointAccelerationRel(0.02).breakWhen(conda));
 		}
-		//闆堕噸鍔�
+		//闂嗗爼鍣搁崝锟�
 		else if (opType.equals("Zero_Gravity"))
 		{
 			if (mc != null) {			
@@ -374,7 +375,29 @@ public class ProtocolProcess {
 		
 		}
 	
+		else if (opType.equals("AddFrame")) {
+		  
+		  tool.createFrame(bean.getParam().target, 
+		      Transformation.ofRad(bean.getParam().getX(), bean.getParam().getY(), bean.getParam().getZ(), 
+		          bean.getParam().getA(),bean.getParam().getB(), bean.getParam().getC()));
+		  
+		  ProtocolResult ret = new ProtocolResult();
+      ret.setOperateType("AddFrame");  
+      ret.setResultMsg("Frame:"+bean.getParam().toString());
+      ret.setResultCode(0);
+      return ret;
+		}
 		
+		else if (opType.equals("SetMotionFrame")) {
+      
+      tool.setDefaultMotionFrame(tool.findFrame(bean.getParam().target));
+
+      ProtocolResult ret = new ProtocolResult();
+      ret.setOperateType("SetMotionFrame");  
+      ret.setResultMsg("Frame:"+bean.getParam().target);
+      ret.setResultCode(0);
+      return ret;
+    }
 //		else if (opType.equals("Master"))
 //		{
 //			if (isSoftMode) {
@@ -518,7 +541,7 @@ public class ProtocolProcess {
 		return ret;
 	}
 	
-	//脰脴脰脙隆垄鹿茅脦禄碌陆戮颅碌盲脦禄脰脙
+	//鑴拌劥鑴拌剻闅嗗瀯楣胯寘鑴︾纰岄檰鎴纰岀洸鑴︾鑴拌剻
 	private ProtocolResult Reset(ProtocolBean bean)
 	{
 		/*JointPosition jp_02 = new JointPosition(0, 0, 0, Math.toRadians(90), 0, Math.toRadians(-90), 0);
@@ -591,7 +614,7 @@ public class ProtocolProcess {
 //		ProtocolResult ret = new ProtocolResult();
 //		ret.setOperateType("Master");
 //		
-//		double jogPosArray[] = {0, -60, 0, 0, 0, 0, 0}; // 瑙掑害
+//		double jogPosArray[] = {0, -60, 0, 0, 0, 0, 0}; // 鐟欐帒瀹�
 //		for (int idx = 0; idx < 7; ++idx) {
 //			if (!mastering.isAxisMastered(idx)) {
 //				log.info("Mastering Axis " + idx + "...");
@@ -613,7 +636,7 @@ public class ProtocolProcess {
 //		return ret;
 //	}
 //	
-//public void jog2AxisPosition(double[] axisesDest /*瑙掑害 */) {
+//public void jog2AxisPosition(double[] axisesDest /*鐟欐帒瀹� */) {
 //	JointPosition jtPos = m_robot.getCurrentJointPosition();
 //	double[] axises = jtPos.get();
 //
@@ -632,7 +655,7 @@ public class ProtocolProcess {
 //}
 //	
 //	public ProtocolResult funcMasterNew() {
-//		ThreadUtil.milliSleep(10000); // 绛夊緟10s 浣跨▼搴忔仮澶嶈繍琛岀姸鎬�
+//		ThreadUtil.milliSleep(10000); // 缁涘绶�10s 娴ｈ法鈻兼惔蹇斾划婢跺秷绻嶇悰宀�濮搁幀锟�
 //	
 //		ProtocolResult ret = new ProtocolResult();
 //		ret.setOperateType("Master");
@@ -658,7 +681,7 @@ public class ProtocolProcess {
 //			double[] axisesDest = { 0, 50, 0, -70, 0, -30, 0 };
 //			jog2AxisPosition(axisesDest);
 //			
-//			// 璋冩暣 2锛�4锛�6杞翠綅缃�
+//			// 鐠嬪啯鏆� 2閿涳拷4閿涳拷6鏉炵繝缍呯純锟�
 //			double[] axisesDest246 = { 0, 85, 0, 0, 0, 0, 0 };
 //			jog2AxisPosition(axisesDest246);
 //
@@ -684,7 +707,7 @@ public class ProtocolProcess {
 //		axises = jtPos.toArray();
 //		log.info("aaaaaaaaaa  ==********************======== " + axises);
 //		cnt = 0;
-//		// 浼哥洿2杞达紝 寮洸4锛�6杞�
+//		// 娴煎摜娲�2鏉炶揪绱� 瀵垱娲�4閿涳拷6鏉烇拷
 //		double[] axisesDestWind = { 0, 0, 0, -90, 0, 10, 0 };
 //		jog2AxisPosition(axisesDestWind);
 //		
