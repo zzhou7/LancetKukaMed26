@@ -383,7 +383,7 @@ public class ProtocolProcess {
 //		  
 		  ProtocolResult ret = new ProtocolResult();
       ret.setOperateType("AddFrame");  
-//      ret.setResultMsg("Frame:"+bean.getParam().toString());
+      ret.setResultMsg("Frame:"+bean.getParam().toString());
       ret.setResultCode(0);
       return ret;
 		}
