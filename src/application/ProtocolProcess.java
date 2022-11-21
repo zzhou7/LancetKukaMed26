@@ -377,10 +377,10 @@ public class ProtocolProcess {
 	
 		else if (opType.equals("AddFrame")) {
 		  
-		  tool.createFrame(bean.getParam().target, 
-		      Transformation.ofRad(bean.getParam().getX(), bean.getParam().getY(), bean.getParam().getZ(), 
-		          bean.getParam().getA(),bean.getParam().getB(), bean.getParam().getC()));
-		  
+//		  tool.createFrame(bean.getParam().target, 
+//		      Transformation.ofRad(bean.getParam().getX(), bean.getParam().getY(), bean.getParam().getZ(), 
+//		          bean.getParam().getA(),bean.getParam().getB(), bean.getParam().getC()));
+//		  
 		  ProtocolResult ret = new ProtocolResult();
       ret.setOperateType("AddFrame");  
       ret.setResultMsg("Frame:"+bean.getParam().toString());
