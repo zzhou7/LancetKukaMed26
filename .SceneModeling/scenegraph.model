@@ -11,18 +11,6 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="a3d4c7e4-e486-426e-bc9e-05de297a495a" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
-        <frameConnection xsi:type="core:StaticFrameConnection">
-          <transformation/>
-        </frameConnection>
-        <childObject xsi:type="core:Tool" id="c2197b8e-e63b-4007-bf80-34fe807e7a64" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="a3d4c7e4-e486-426e-bc9e-05de297a495a" defaultParentAttachmentFrame="a3d4c7e4-e486-426e-bc9e-05de297a495a" transient="true" defaultMotionFrame="a3d4c7e4-e486-426e-bc9e-05de297a495a">
-          <rootFrame id="a3d4c7e4-e486-426e-bc9e-05de297a495a" name="ROOT"/>
-          <loadData mass="0.676">
-            <centerOfMass z="20.0"/>
-            <inertia/>
-          </loadData>
-        </childObject>
-      </childObjectConnections>
     </childObject>
   </childObjectConnections>
 </core:World>
