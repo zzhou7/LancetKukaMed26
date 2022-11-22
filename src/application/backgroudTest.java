@@ -7,8 +7,10 @@ import com.kuka.roboticsAPI.applicationModel.RoboticsAPIApplication;
 import com.kuka.roboticsAPI.applicationModel.tasks.IRoboticsAPITaskInjectableTypes;
 import com.kuka.device.ForceData;
 import com.kuka.device.common.JointPosition;
+import com.kuka.geometry.LoadData;
 import com.kuka.geometry.ObjectFrame;
 import com.kuka.geometry.Tool;
+import com.kuka.math.geometry.ITransformation;
 import com.kuka.math.geometry.Transformation;
 import com.kuka.med.devicemodel.LBRMed;
 import com.kuka.scenegraph.ISceneGraph;
@@ -41,7 +43,14 @@ public class backgroudTest extends RoboticsAPIApplication {
   public void initialize() throws Exception {
     // Cleans the scene graph by removing all transient objects
     sceneGraph.clean();
-
+    ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
+    //  LoadData loadRobot =  robot.getLoadData();
+    LoadData loadRobot =  new LoadData();
+    loadRobot.setCenterOfMass(tans);
+    loadRobot.setMass(0.676);
+    tool = new Tool("tool", loadRobot);
+    logger.info(tool.getLoadData().toString());
+    tool.attachTo(robot.getFlange());
     // TODO Initialize your application here
     try {
       soc = new UDPSocketForBackground("172.31.1.148", 30003);
