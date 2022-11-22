@@ -2,6 +2,7 @@ package application;
 
 import com.kuka.device.common.JointPosition;
 import com.kuka.geometry.LoadData;
+import com.kuka.geometry.ObjectFrame;
 import com.kuka.geometry.Tool;
 import com.kuka.math.geometry.ITransformation;
 import com.kuka.math.geometry.Transformation;
@@ -80,6 +81,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 
   @Override
 	public void initialize() {	
+    //detach all tools
+    robot.detachChildren();
 		//robot = getContext().getDeviceFromType(LBRMed.class);
 		//mastering = new Mastering(robot);
 		ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
@@ -90,6 +93,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 		tool = new Tool("tool", loadRobot);
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
+		
 		//logger.info(robot.getLoadData().toString());
 		
 		//tool.addDefaultMotionFrame("cubeOrigin", Transformation.of(0, 0, 66));
