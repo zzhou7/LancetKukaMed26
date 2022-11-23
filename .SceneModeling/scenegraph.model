@@ -11,6 +11,29 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
+      <childObjectConnections childObjectFrame="34d1e67f-7a98-43ab-baba-5c39aaed0028" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+        <frameConnection xsi:type="core:StaticFrameConnection">
+          <transformation/>
+        </frameConnection>
+        <childObject xsi:type="core:Tool" id="fc2bb77d-0415-4d9b-ba72-8997e5f18b64" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="34d1e67f-7a98-43ab-baba-5c39aaed0028" defaultParentAttachmentFrame="34d1e67f-7a98-43ab-baba-5c39aaed0028" transient="true" defaultMotionFrame="34d1e67f-7a98-43ab-baba-5c39aaed0028">
+          <rootFrame id="34d1e67f-7a98-43ab-baba-5c39aaed0028" name="ROOT">
+            <childFrames id="6b8d5620-2ace-434c-90b8-f169d5b2381e" name="Flange">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+            <childFrames id="8a2af5a4-e3f6-4791-b1fa-1013f9157897" name="RobotEndRF_robot">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+          </rootFrame>
+          <loadData mass="0.676">
+            <centerOfMass z="20.0"/>
+            <inertia/>
+          </loadData>
+        </childObject>
+      </childObjectConnections>
     </childObject>
   </childObjectConnections>
 </core:World>
