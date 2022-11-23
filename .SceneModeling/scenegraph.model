@@ -11,20 +11,20 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="0e6e0ea6-6e7c-4fdb-940d-6b2788b246d2" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+      <childObjectConnections childObjectFrame="54c30bc4-70f9-4a9e-8e78-f577baffffec" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
         <frameConnection xsi:type="core:StaticFrameConnection">
           <transformation/>
         </frameConnection>
-        <childObject xsi:type="core:Tool" id="c4018ac7-d495-43af-82b6-86be55a44670" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="0e6e0ea6-6e7c-4fdb-940d-6b2788b246d2" defaultParentAttachmentFrame="0e6e0ea6-6e7c-4fdb-940d-6b2788b246d2" transient="true" defaultMotionFrame="0e6e0ea6-6e7c-4fdb-940d-6b2788b246d2">
-          <rootFrame id="0e6e0ea6-6e7c-4fdb-940d-6b2788b246d2" name="ROOT">
-            <childFrames id="9e9b1b4a-4afc-4cc3-a43c-279a101f07ad" name="Flange">
+        <childObject xsi:type="core:Tool" id="657d872f-cabd-4def-a449-d489eb3dde1a" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="54c30bc4-70f9-4a9e-8e78-f577baffffec" defaultParentAttachmentFrame="54c30bc4-70f9-4a9e-8e78-f577baffffec" transient="true" defaultMotionFrame="54c30bc4-70f9-4a9e-8e78-f577baffffec">
+          <rootFrame id="54c30bc4-70f9-4a9e-8e78-f577baffffec" name="ROOT">
+            <childFrames id="cfde3779-2e50-412a-bbdd-eb4d8a0a17f1" name="RobotEndRF_robot">
               <parentFrameConnection xsi:type="core:StaticFrameConnection">
                 <transformation/>
               </parentFrameConnection>
             </childFrames>
-            <childFrames id="c8a5551b-da6b-4ffb-98d4-df111951948c" name="RobotEndRF_robot">
+            <childFrames id="db4de665-7d66-4aa8-bbe8-29a108ddd85e" name="Flange">
               <parentFrameConnection xsi:type="core:StaticFrameConnection">
-                <transformation/>
+                <transformation z="100.0" alphaRad="1.0"/>
               </parentFrameConnection>
             </childFrames>
           </rootFrame>
