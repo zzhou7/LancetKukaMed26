@@ -84,6 +84,7 @@ public class BackgroundTask extends RoboticsAPICyclicBackgroundTask {
       //no tool attached yet,return flange position
       Transformation trans = robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent();
       trackingFrame f = new trackingFrame();
+      f.name = robot.getFlange().getName();
       f.position[0] = trans.getX();
       f.position[1] = trans.getY();
       f.position[2] = trans.getZ();
@@ -97,6 +98,7 @@ public class BackgroundTask extends RoboticsAPICyclicBackgroundTask {
       for (ObjectFrame frame : tool.findFrames()) {
         Transformation trans = robot.getCurrentCartesianPosition(frame).getTransformationFromParent();
         trackingFrame f = new trackingFrame();
+        f.name = frame.getName();
         f.position[0] = trans.getX();
         f.position[1] = trans.getY();
         f.position[2] = trans.getZ();
