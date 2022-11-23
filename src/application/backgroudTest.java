@@ -80,11 +80,14 @@ public class backgroudTest extends RoboticsAPIApplication {
     info.forcetorque[5] = forceData.getTorque().getZ();
     
     
-    tool = (Tool)robot.findObject("tool");
-    
-    tool = (Tool)robot.findObject("tool");
+    try {
+      tool = (Tool)robot.findObject("tool");
+    } catch (Exception e) {
+      logger.info("cant find tool");
+      e.printStackTrace();
+    }
     if (tool == null) {
-      //no tool attached yet,return flange position
+      //no frame in tool added,return flange position
       Transformation trans = robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent();
       trackingFrame f = new trackingFrame();
       f.position[0] = trans.getX();
