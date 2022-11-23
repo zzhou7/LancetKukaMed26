@@ -209,7 +209,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
             long timeOut = System.currentTimeMillis() - oldTime;
             if (0 != oldTime && timeOut > 5 * 1000) {
               logger.info("timeOut  " + String.valueOf(timeOut));
-
+              tool.detachChildren(); // detach all frames, When reconnect server will addFrame again
               ReConnect();
               Thread.sleep(3000);
               if (m_socket.isConnected()) {
