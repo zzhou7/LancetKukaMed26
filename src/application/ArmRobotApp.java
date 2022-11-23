@@ -80,47 +80,18 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 
   @Override
 	public void initialize() {	
-		//robot = getContext().getDeviceFromType(LBRMed.class);
+    //detach all tools
+    robot.detachChildren();
 		//mastering = new Mastering(robot);
 		ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
-	//	LoadData loadRobot =  robot.getLoadData();
+		//	LoadData loadRobot =  robot.getLoadData();
 		LoadData loadRobot =  new LoadData();
 		loadRobot.setCenterOfMass(tans);
 		loadRobot.setMass(0.676);
 		tool = new Tool("tool", loadRobot);
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
-		//logger.info(robot.getLoadData().toString());
-		
-		//tool.addDefaultMotionFrame("cubeOrigin", Transformation.of(0, 0, 66));
-		//tool.addChildFrame("Finger", Transformation.ofTranslation(0, 48, 157));
-		//tool.addChildFrame("RobotUserTool", Transformation.ofTranslation(0, 200, 170));
-		
-//		IErrorHandler errorMotionHandler = new IErrorHandler() {
-//			@Override
-//			public ErrorHandlingAction handleError(Device device,
-//					IMotionContainer failedContainer,
-//					List<IMotionContainer> canceledContainers) {
-//				logger.info("failedContainer motion: " + failedContainer.toString());
-//				logger.info("canceledContainers motions: ");
-//				for (int i = 0; i < canceledContainers.size(); i++) {
-//					logger.info(canceledContainers.get(i).toString());
-//				}
-//				logger.info("getErrorMessage: " + failedContainer.getErrorMessage());
-//				String strError = failedContainer.getErrorMessage();
-//				if (strError.contains("Maximum path deviation exceeded")) {
-//					logger.info(" Maximum path exceeded ");
-//					return ErrorHandlingAction.PauseMotion;
-//				} else if (strError.contains("Can not plan motion")) {
-//					logger.info(" failedContainer Can not plan motion !");
-//				
-//					return ErrorHandlingAction.Ignore;
-//				} else {
-//					logger.info("else failedContainer!");
-//				return ErrorHandlingAction.Ignore;
-//				}						
-//			}			
-//		};
+	
 		IMotionErrorHandler errorMotionHandler = new IMotionErrorHandler() {
       @Override
       public ErrorHandlingAction handleExecutionError(IMotionContainer failedContainer,
