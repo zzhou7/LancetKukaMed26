@@ -374,27 +374,44 @@ public class ProtocolProcess {
 			return SoftModeOff();
 		
 		}
-	
+		
 		else if (opType.equals("AddFrame")) {
-		  
-		  tool.createFrame(bean.getParam().target, 
-		      Transformation.ofRad(bean.getParam().getX(), bean.getParam().getY(), bean.getParam().getZ(), 
-		          bean.getParam().getA(),bean.getParam().getB(), bean.getParam().getC()));
-//		  
+		  Param param = bean.getParam();
+		  ObjectFrame frame = null;
 		  ProtocolResult ret = new ProtocolResult();
-      ret.setOperateType("AddFrame");  
-      ret.setResultMsg("Frame:"+bean.getParam().target);
+		  ret.setOperateType("AddFrame");  
+      ret.setResultMsg("Add Frame:"+param.target);
+		  try {
+		    frame = tool.findFrame(param.target);
+		  } catch (Exception e){
+		    log.info("Frame not exist: "+param.target);
+		  }
+		  if(frame != null) {
+		    tool.detachChildren(frame);
+		    ret.setResultMsg("Set Frame:"+param.target);
+		  } 
+		  tool.createFrame(param.target, 
+          Transformation.ofRad(param.getX(), param.getY(), param.getZ(), 
+              param.getA(),param.getB(), param.getC()));
+
       ret.setResultCode(0);
       return ret;
 		}
 		
-		else if (opType.equals("SetMotionFrame")) {
-      
-      tool.setDefaultMotionFrame(tool.findFrame(bean.getParam().target));
-
+		else if (opType.equals("SetMotionFrame")) {  
+      try {
+        tool.setDefaultMotionFrame(tool.findFrame(bean.getParam().target));
+      } catch (Exception e){
+        log.info("Frame not exist: "+bean.getParam().target);
+        ProtocolResult ret = new ProtocolResult();
+        ret.setOperateType("SetMotionFrame");  
+        ret.setResultMsg("Failed,Frame:"+bean.getParam().target);
+        ret.setResultCode(-1);
+        return ret;
+      }
       ProtocolResult ret = new ProtocolResult();
       ret.setOperateType("SetMotionFrame");  
-      ret.setResultMsg("Frame:"+bean.getParam().target);
+      ret.setResultMsg("Success,Frame:"+bean.getParam().target);
       ret.setResultCode(0);
       return ret;
     }
@@ -406,42 +423,7 @@ public class ProtocolProcess {
 //			}
 //			return funcMaster();
 //		}
-		//add 2021-08-18 jinwang ,dont't delete;
-		else if (opType.equals("GetUserToolPos"))
-		{
-			tool.findFrame("RobotUserTool");
-			JointPosition jtPos = m_robot.getCurrentJointPosition();
-			Frame frm = m_robot.getCurrentCartesianPosition(m_robot.getFlange());
-			ProtocolResult ret = new ProtocolResult();
-			ret.setOperateType(opType);	
-			Param  prm = new Param();
-			prm.x = frm.getTransformationFromParent().getX();
-			prm.y = frm.getTransformationFromParent().getY();
-			prm.z = frm.getTransformationFromParent().getZ();
-			prm.a = Math.toDegrees(frm.getTransformationFromParent().getAlphaRad());
-			prm.b = Math.toDegrees(frm.getTransformationFromParent().getBetaRad());
-			prm.c = Math.toDegrees(frm.getTransformationFromParent().getGammaRad());
-		  ret.setParam(prm);
-			ret.setResultMsg(jtPos.toString());
-			return ret;
-		}
-		else if (opType.equals("GetJointPos"))
-		{
-			JointPosition jtPos = m_robot.getCurrentJointPosition();
-			Frame frm = m_robot.getCurrentCartesianPosition(m_robot.getFlange());
-			ProtocolResult ret = new ProtocolResult();
-			ret.setOperateType(opType);	
-			Param  prm = new Param();
-			prm.x = frm.getTransformationFromParent().getX();
-			prm.y = frm.getTransformationFromParent().getY();
-			prm.z = frm.getTransformationFromParent().getZ();
-			prm.a = Math.toDegrees(frm.getTransformationFromParent().getAlphaRad());
-			prm.b = Math.toDegrees(frm.getTransformationFromParent().getBetaRad());
-			prm.c = Math.toDegrees(frm.getTransformationFromParent().getGammaRad());
-		    ret.setParam(prm);
-			ret.setResultMsg(jtPos.toString());
-			return ret;
-		}
+
 		else if (opType.equals("Speed"))
 		{
 			String str = bean.getParam().getTarget();
