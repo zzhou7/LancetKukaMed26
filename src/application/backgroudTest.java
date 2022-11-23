@@ -90,6 +90,7 @@ public class backgroudTest extends RoboticsAPIApplication {
       //no frame in tool added,return flange position
       Transformation trans = robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent();
       trackingFrame f = new trackingFrame();
+      f.name = robot.getFlange().getName();
       f.position[0] = trans.getX();
       f.position[1] = trans.getY();
       f.position[2] = trans.getZ();
@@ -103,6 +104,7 @@ public class backgroudTest extends RoboticsAPIApplication {
       for (ObjectFrame frame : tool.findFrames()) {
         Transformation trans = robot.getCurrentCartesianPosition(frame).getTransformationFromParent();
         trackingFrame f = new trackingFrame();
+        f.name = frame.getName();
         f.position[0] = trans.getX();
         f.position[1] = trans.getY();
         f.position[2] = trans.getZ();
