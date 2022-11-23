@@ -387,7 +387,7 @@ public class ProtocolProcess {
 		    log.info("Frame not exist: "+param.target);
 		  }
 		  if(frame != null) {
-		    tool.detachChildren(frame);
+		    tool.removeFrame(frame);
 		    ret.setResultMsg("Set Frame:"+param.target);
 		  } 
 		  tool.createFrame(param.target, 
