@@ -74,14 +74,9 @@ public class BackgroundTask extends RoboticsAPICyclicBackgroundTask {
     info.forcetorque[5] = forceData.getTorque().getZ();
     
     
-    try {
-      tool = (Tool)robot.findObject("tool");
-    } catch (Exception e) {
-      logger.info("cant find tool");
-      e.printStackTrace();
-    }
-    if (tool.findFrames().isEmpty()) {
-      //no frame in tool added,return flange position
+    tool = (Tool)robot.findObject("tool");
+    if (tool == null) {
+      //no tool attached yet,return flange position
       Transformation trans = robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent();
       trackingFrame f = new trackingFrame();
       f.position[0] = trans.getX();
