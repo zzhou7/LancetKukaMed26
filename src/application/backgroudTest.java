@@ -43,14 +43,14 @@ public class backgroudTest extends RoboticsAPIApplication {
   public void initialize() throws Exception {
     // Cleans the scene graph by removing all transient objects
     sceneGraph.clean();
-    ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
-    //  LoadData loadRobot =  robot.getLoadData();
-    LoadData loadRobot =  new LoadData();
-    loadRobot.setCenterOfMass(tans);
-    loadRobot.setMass(0.676);
-    tool = new Tool("tool", loadRobot);
-    logger.info(tool.getLoadData().toString());
-    tool.attachTo(robot.getFlange());
+//    ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
+//    //  LoadData loadRobot =  robot.getLoadData();
+//    LoadData loadRobot =  new LoadData();
+//    loadRobot.setCenterOfMass(tans);
+//    loadRobot.setMass(0.676);
+//    tool = new Tool("tool", loadRobot);
+//    logger.info(tool.getLoadData().toString());
+//    tool.attachTo(robot.getFlange());
     // TODO Initialize your application here
     try {
       soc = new UDPSocketForBackground("172.31.1.148", 30003);
@@ -80,14 +80,11 @@ public class backgroudTest extends RoboticsAPIApplication {
     info.forcetorque[5] = forceData.getTorque().getZ();
     
     
-    try {
-      tool = (Tool)robot.findObject("tool");
-    } catch (Exception e) {
-      logger.info("cant find tool");
-      e.printStackTrace();
-    }
-    if (tool.findFrames().isEmpty()) {
-      //no frame in tool added,return flange position
+    tool = (Tool)robot.findObject("tool");
+    
+    tool = (Tool)robot.findObject("tool");
+    if (tool == null) {
+      //no tool attached yet,return flange position
       Transformation trans = robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent();
       trackingFrame f = new trackingFrame();
       f.position[0] = trans.getX();
