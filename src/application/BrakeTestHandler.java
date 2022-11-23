@@ -82,6 +82,11 @@ public class BrakeTestHandler implements IBraketestMonitorListener
 
   public ProtocolResult run()
   {
+    _brakeTestMonitor = _lbrMed.getCapability(IBraketestMonitor.class);
+    _brakeTestMonitor.addMonitoringListener(this);
+
+    _notificationTime = _brakeTestMonitor.setNotificationTime(_notificationTime);
+    _logger.info("notification time changed to " + _notificationTime);
       // check the current status of the cyclic brake test because an event could have been missed due to
       // late start of the application
       _currentStatus = _brakeTestMonitor.getState();
@@ -126,7 +131,8 @@ public class BrakeTestHandler implements IBraketestMonitorListener
 
           requestUserFeedback();
       }
-      return null;
+      ProtocolResult res = new ProtocolResult();
+      return  res;
   }
 
   /**
