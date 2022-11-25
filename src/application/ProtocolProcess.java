@@ -207,7 +207,9 @@ public class ProtocolProcess {
         mc.cancel();
       }
       Param p =bean.getParam();
-      double [] target = {p.x,p.y,p.z,p.a,p.b,p.c};
+      LocalFrame target = new LocalFrame();
+      ITransformation tans = Transformation.ofDeg(p.x,p.y,p.z,p.a,p.b,p.c);
+      target.transform(tans);
       mc = tool.move(ptp(target)
           .setJointVelocityRel(0.05).setJointAccelerationRel(0.02));
       ProtocolResult ret = new ProtocolResult();
