@@ -20,6 +20,7 @@ import com.kuka.geometry.LoadData;
 import com.kuka.geometry.LocalFrame;
 import com.kuka.geometry.ObjectFrame;
 import com.kuka.geometry.Tool;
+import com.kuka.math.geometry.ITransformation;
 import com.kuka.math.geometry.Transformation;
 import com.kuka.med.devicemodel.LBRMed;
 import com.kuka.motion.IMotion;
@@ -153,14 +154,68 @@ public class ProtocolProcess {
 		{
 			return Reset(bean);
 		}
-		else if (opType.equals("TestBrake"))
+		else if (opType.equals("RunBrakeTest"))
 		{
 			return TestBrake(bean);
 		}
-		else if (opType.equals("FreeHand"))
+		else if (opType.equals("HandGuiding"))
 		{
 			return freeHand();
 		}
+		else if (opType.equals("AddFrame")) {
+      Param param = bean.getParam();
+      ObjectFrame frame = null;
+      ProtocolResult ret = new ProtocolResult();
+      ret.setOperateType("AddFrame");  
+      ret.setResultMsg("Add Frame:"+param.target);
+      try {
+        frame = tool.findFrame(param.target);
+      } catch (Exception e){
+        log.info("Frame not exist: "+param.target);
+      }
+      if(frame != null) {
+        tool.removeFrame(frame);
+        ret.setResultMsg("Set Frame:"+param.target);
+      } 
+      tool.createFrame(param.target, 
+          Transformation.ofRad(param.getX(), param.getY(), param.getZ(), 
+              param.getA(),param.getB(), param.getC()));
+
+      ret.setResultCode(0);
+      return ret;
+    }
+    else if (opType.equals("SetMotionFrame")) {  
+      try {
+        tool.setDefaultMotionFrame(tool.findFrame(bean.getParam().target));
+      } catch (Exception e){
+        log.info("Frame not exist: "+bean.getParam().target);
+        ProtocolResult ret = new ProtocolResult();
+        ret.setOperateType("SetMotionFrame");  
+        ret.setResultMsg("Failed,Frame:"+bean.getParam().target);
+        ret.setResultCode(-1);
+        return ret;
+      }
+      ProtocolResult ret = new ProtocolResult();
+      ret.setOperateType("SetMotionFrame");  
+      ret.setResultMsg("Success,Frame:"+bean.getParam().target);
+      ret.setResultCode(0);
+      return ret;
+    }
+    else if (opType.equals("MovePTP"))
+    {
+      if (mc != null) {     
+        mc.cancel();
+      }
+      Param p =bean.getParam();
+      double [] target = {p.x,p.y,p.z,p.a,p.b,p.c};
+      mc = tool.move(ptp(target)
+          .setJointVelocityRel(0.05).setJointAccelerationRel(0.02));
+      ProtocolResult ret = new ProtocolResult();
+      ret.setOperateType("MovePTP");    
+      ret.setResultMsg("MovePTP ok");
+      ret.setResultCode(0);
+      return ret;
+    }
 		else if (opType.equals("MoveStop"))
 		{
 			mc.cancel();
@@ -340,21 +395,7 @@ public class ProtocolProcess {
 			ret.setResultCode(0);
 			return ret;
 		}
-		else if (opType.equals("AutoMode_On"))
-		{
-			if (mc != null) {			
-				mc.cancel();
-			}
-			Param p =bean.getParam();
-			double [] endpoint = {p.x,p.y,p.z,p.a,p.b,p.c};
-			mc = tool.findFrame("RobotUserTool").moveAsync(ptp(endpoint)
-					.setJointVelocityRel(0.05).setJointAccelerationRel(0.02));
-			ProtocolResult ret = new ProtocolResult();
-			ret.setOperateType("SoftMode_On");		
-			ret.setResultMsg("SoftMode_On ok");
-			ret.setResultCode(0);
-			return ret;
-		}
+		
 		else if (opType.equals("SoftMode_On"))
 		{
 			if (mc != null) {			
@@ -374,47 +415,6 @@ public class ProtocolProcess {
 			return SoftModeOff();
 		
 		}
-		
-		else if (opType.equals("AddFrame")) {
-		  Param param = bean.getParam();
-		  ObjectFrame frame = null;
-		  ProtocolResult ret = new ProtocolResult();
-		  ret.setOperateType("AddFrame");  
-      ret.setResultMsg("Add Frame:"+param.target);
-		  try {
-		    frame = tool.findFrame(param.target);
-		  } catch (Exception e){
-		    log.info("Frame not exist: "+param.target);
-		  }
-		  if(frame != null) {
-		    tool.removeFrame(frame);
-		    ret.setResultMsg("Set Frame:"+param.target);
-		  } 
-		  tool.createFrame(param.target, 
-          Transformation.ofRad(param.getX(), param.getY(), param.getZ(), 
-              param.getA(),param.getB(), param.getC()));
-
-      ret.setResultCode(0);
-      return ret;
-		}
-		
-		else if (opType.equals("SetMotionFrame")) {  
-      try {
-        tool.setDefaultMotionFrame(tool.findFrame(bean.getParam().target));
-      } catch (Exception e){
-        log.info("Frame not exist: "+bean.getParam().target);
-        ProtocolResult ret = new ProtocolResult();
-        ret.setOperateType("SetMotionFrame");  
-        ret.setResultMsg("Failed,Frame:"+bean.getParam().target);
-        ret.setResultCode(-1);
-        return ret;
-      }
-      ProtocolResult ret = new ProtocolResult();
-      ret.setOperateType("SetMotionFrame");  
-      ret.setResultMsg("Success,Frame:"+bean.getParam().target);
-      ret.setResultCode(0);
-      return ret;
-    }
 //		else if (opType.equals("Master"))
 //		{
 //			if (isSoftMode) {
