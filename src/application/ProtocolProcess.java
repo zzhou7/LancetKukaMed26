@@ -208,8 +208,7 @@ public class ProtocolProcess {
       }
       Param p =bean.getParam();
       ITransformation tans = Transformation.ofRad(p.x,p.y,p.z,p.a,p.b,p.c);
-      //LocalFrame target = new LocalFrame(m_robot.findWorld().getRootFrame(),tans);
-      Frame target = m_robot.findWorld().createFrame("target", tans);
+      LocalFrame target = new LocalFrame(m_robot.findWorld().getRootFrame(),tans);
       mc = m_robot.moveAsync(ptp(target)
           .setJointVelocityRel(0.05).setJointAccelerationRel(0.02));
       ProtocolResult ret = new ProtocolResult();
