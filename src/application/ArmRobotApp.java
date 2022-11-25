@@ -88,7 +88,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     robot.detachChildren();
     //clean frames in world
     
-    world.removeFrame(world.findFrame("target"));
+    //world.removeFrame(world.findFrame("target"));
 
     
 		//mastering = new Mastering(robot);
