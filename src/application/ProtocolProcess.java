@@ -207,7 +207,7 @@ public class ProtocolProcess {
         mc.cancel();
       }
       Param p =bean.getParam();
-      ITransformation tans = Transformation.ofDeg(p.x,p.y,p.z,p.a,p.b,p.c);
+      ITransformation tans = Transformation.ofRad(p.x,p.y,p.z,p.a,p.b,p.c);
       //LocalFrame target = new LocalFrame(m_robot.findWorld().getRootFrame(),tans);
       Frame target = m_robot.findWorld().createFrame("target", tans);
       mc = m_robot.moveAsync(ptp(target)
