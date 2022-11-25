@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <core:World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.kuka.com/rapi2/geometry/core" id="_8GmbsGY7Ee2AwJ_VYXOlcw" name="World" lastModificationTime="2022-11-17T13:51:54.091+0800" defaultChildAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw" defaultParentAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw">
-  <rootFrame id="_8Gl0oWY7Ee2AwJ_VYXOlcw" name="ROOT" lastModificationTime="2022-11-17T13:51:54.091+0800">
-    <childFrames id="206b2065-f319-4c3b-8e06-5cbf2a105d9a" name="target">
-      <parentFrameConnection xsi:type="core:StaticFrameConnection">
-        <transformation x="-679.1120824867697" y="101.71955352612083" z="448.31739515282936" alphaRad="0.050773268016001336" betaRad="-3.3202980467726055E-4" gammaRad="0.052830610123763375"/>
-      </parentFrameConnection>
-    </childFrames>
-  </rootFrame>
+  <rootFrame id="_8Gl0oWY7Ee2AwJ_VYXOlcw" name="ROOT" lastModificationTime="2022-11-17T13:51:54.091+0800"/>
   <childObjectConnections childObjectFrame="_8GwMsWY7Ee2AwJ_VYXOlcw" parentObjectFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw">
     <frameConnection xsi:type="core:StaticFrameConnection">
       <transformation betaRad="-0.5235987755982988"/>
@@ -17,12 +11,18 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="fb0de118-2d85-435b-a214-9f6f7e23400a" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+      <childObjectConnections childObjectFrame="49962403-952b-48b9-9da0-608c565717aa" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
         <frameConnection xsi:type="core:StaticFrameConnection">
           <transformation/>
         </frameConnection>
-        <childObject xsi:type="core:Tool" id="a5d17b3d-9f17-4089-af6c-014438afbf45" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="fb0de118-2d85-435b-a214-9f6f7e23400a" defaultParentAttachmentFrame="fb0de118-2d85-435b-a214-9f6f7e23400a" transient="true" defaultMotionFrame="fb0de118-2d85-435b-a214-9f6f7e23400a">
-          <rootFrame id="fb0de118-2d85-435b-a214-9f6f7e23400a" name="ROOT"/>
+        <childObject xsi:type="core:Tool" id="f7097cbc-78f5-45c3-bde7-d133ba2c88cf" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="49962403-952b-48b9-9da0-608c565717aa" defaultParentAttachmentFrame="49962403-952b-48b9-9da0-608c565717aa" transient="true" defaultMotionFrame="49962403-952b-48b9-9da0-608c565717aa">
+          <rootFrame id="49962403-952b-48b9-9da0-608c565717aa" name="ROOT">
+            <childFrames id="a9949e4f-b545-4498-a51d-588c63665067" name="null">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+          </rootFrame>
           <loadData mass="0.676">
             <centerOfMass z="20.0"/>
             <inertia/>

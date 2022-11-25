@@ -1,8 +1,11 @@
 package application;
 
 import com.kuka.device.common.JointPosition;
+import com.kuka.geometry.Frame;
 import com.kuka.geometry.LoadData;
+import com.kuka.geometry.ObjectFrame;
 import com.kuka.geometry.Tool;
+import com.kuka.geometry.World;
 import com.kuka.math.geometry.ITransformation;
 import com.kuka.math.geometry.Transformation;
 import com.kuka.med.devicemodel.LBRMed;
@@ -58,6 +61,7 @@ import javax.inject.Named;
 @MedApplicationCategory(checkMastering = false)
 public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private LBRMed robot;
+  @Inject private World world;
   //@Named("Tool")
   //@Inject 
   private Tool tool;
@@ -82,6 +86,11 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 	public void initialize() {	
     //detach all tools
     robot.detachChildren();
+    //clean frames in world
+    for(ObjectFrame f: world.findFrames()) {
+      world.removeFrame(f);
+    }
+    
 		//mastering = new Mastering(robot);
 		ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
 		//	LoadData loadRobot =  robot.getLoadData();
