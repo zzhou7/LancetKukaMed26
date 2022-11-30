@@ -1,8 +1,9 @@
-package application;
+package protocols;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class GsonUtil {
@@ -23,4 +24,9 @@ private static Gson gson = new GsonBuilder().serializeNulls()
 		JsonElement je = jp.parse(uglyJsonStr);
 		return gson.toJson(je);
 		}
+	
+	public static String getStringValue(String jsonStr,String key) {
+	  JsonObject returnObj = new JsonParser().parse(jsonStr).getAsJsonObject();
+	  return returnObj.get(key).getAsString();
 	}
+}

@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
+import protocols.ProtocolResult;
 import com.kuka.device.common.JointPosition;
 import com.kuka.med.cyclicbraketest.EBraketestExecutionState;
 import com.kuka.med.cyclicbraketest.EBraketestMonitorState;

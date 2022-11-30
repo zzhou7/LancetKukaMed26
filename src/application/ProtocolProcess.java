@@ -35,7 +35,9 @@ import java.util.ArrayList;
 import java.util.EnumSet; 
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
-
+import protocols.Param;
+import protocols.ProtocolBean;
+import protocols.ProtocolResult;
 //import com.kuka.common.ThreadUtil;
 //import com.kuka.med.deviceModel.LBRMed;
 import com.kuka.roboticsAPI.conditionModel.ForceCondition;

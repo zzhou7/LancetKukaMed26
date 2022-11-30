@@ -18,6 +18,7 @@ import com.kuka.task.ITaskLogger;
 import java.io.IOException;
 import java.net.SocketException;
 import javax.inject.Inject;
+import protocols.GsonUtil;
 import protocols.robotInformation;
 import protocols.trackingFrame;
 

@@ -5,6 +5,7 @@ import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptpHome;
 import com.kuka.handguiding.motion.controlmode.HandGuidingControlMode;
 import static com.kuka.handguiding.motion.HRCMotions.handGuiding;
 import com.kuka.med.devicemodel.LBRMed;
+import protocols.ProtocolResult;
 
 
 public class FreeHandMotion {

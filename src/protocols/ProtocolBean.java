@@ -1,4 +1,4 @@
-package application;
+package protocols;
 
 public class ProtocolBean {
 	private String operateType;

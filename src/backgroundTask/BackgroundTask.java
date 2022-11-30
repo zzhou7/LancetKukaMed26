@@ -1,6 +1,5 @@
 package backgroundTask;
 
-import application.GsonUtil;
 import com.kuka.device.ForceData;
 import com.kuka.device.common.JointPosition;
 import com.kuka.geometry.ObjectFrame;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import protocols.GsonUtil;
 import protocols.robotInformation;
 import protocols.trackingFrame;
 /**

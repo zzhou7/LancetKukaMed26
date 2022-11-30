@@ -1,4 +1,4 @@
-package application;
+package protocols;
 
 public class ProtocolResult {
 	private int resultCode;

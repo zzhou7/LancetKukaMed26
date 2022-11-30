@@ -24,6 +24,8 @@ import com.kuka.roboticsAPI.motionModel.IMotionErrorHandler;
 import com.kuka.roboticsAPI.uiModel.IApplicationUI;
 import com.kuka.task.ITaskLogger;
 import com.kuka.task.RoboticsAPITask;
+import commandHandle.CommandHandler;
+import commands.Test;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -39,6 +41,11 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.inject.Inject;
 import javax.inject.Named;
+import protocols.BasicRobotCommandProtocol;
+import protocols.GsonUtil;
+import protocols.MovePCommandProtocol;
+import protocols.ProtocolBean;
+import protocols.ProtocolResult;
 /**
  * Implementation of a robot application.
  * <p>
@@ -60,6 +67,7 @@ import javax.inject.Named;
 
 @MedApplicationCategory(checkMastering = false)
 public class ArmRobotApp extends RoboticsAPIApplication {
+  private boolean m_isDebug = false;
   @Inject private LBRMed robot;
   @Inject private World world;
   //@Named("Tool")
@@ -69,6 +77,10 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private IApplicationUI appUI;
   @Inject private IApplicationControl appControl;
   @Inject private ObserverManager observerManager;
+  
+  //inject all available command
+  @Inject private Test testCommand;
+  
   private BrakeTestHandler m_brakeTest = null;
   private boolean m_stop = false;
   public boolean isSendMaster = false;
@@ -81,26 +93,28 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   private long freeCheckStart = 0;
   private LinkedList<String> msgQueque = new LinkedList<String>();
   private ReadWriteLock msgLock = new ReentrantReadWriteLock();
-
+  private CommandHandler m_commandHandler = new CommandHandler();
   @Override
 	public void initialize() {	
     //detach all tools
     robot.detachChildren();
     //clean frames in world
     
-    //world.removeFrame(world.findFrame("target"));
-
-    
 		//mastering = new Mastering(robot);
 		ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
-		//	LoadData loadRobot =  robot.getLoadData();
+		
+		//create default tool and attach to flange
 		LoadData loadRobot =  new LoadData();
 		loadRobot.setCenterOfMass(tans);
 		loadRobot.setMass(0.676);
 		tool = new Tool("tool", loadRobot);
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
-	
+		
+		//initialize commandHandle
+		this.initializeCommandHandle();
+		
+		//register motion Error Handler
 		IMotionErrorHandler errorMotionHandler = new IMotionErrorHandler() {
       @Override
       public ErrorHandlingAction handleExecutionError(IMotionContainer failedContainer,
@@ -249,9 +263,15 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 
     try {
       while (!m_stop) {
-        ProtocolBean msgBean = getMsgBean();
-        if (msgBean != null) {
-          ProtocolResult result = m_processer.ProcessData(msgBean);
+        //ProtocolBean msgBean = getMsgBean();
+        String massage = getMsgBean();
+        if (massage != null && !massage.isEmpty()) {
+          logger.info("recv_getMsg: " + massage);
+          //msgBean = GsonUtil.json2Bean(line, ProtocolBean.class);
+          
+          //pass massage string to command handler
+          ProtocolResult result = this.m_commandHandler.PushCommandToHandler(massage);
+          //ProtocolResult result = m_processer.ProcessData(msgBean);
           sendData(result);
 
           if (result != null && result.getOperateType() == "Master") {
@@ -312,17 +332,12 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     }
   }
 
-  public ProtocolBean getMsgBean() {
+  public String getMsgBean() {
     msgLock.readLock().lock();
-    String line = msgQueque.poll();
+    String massage = msgQueque.poll();
     msgLock.readLock().unlock();
 
-    ProtocolBean msgBean = null;
-    if (line != null && !line.isEmpty()) {
-      logger.info("recv_getMsg: " + line);
-      msgBean = GsonUtil.json2Bean(line, ProtocolBean.class);
-    }
-    return msgBean;
+    return massage;
   }
 
   public ProtocolBean peekMsgBean() {
@@ -396,4 +411,132 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 //      }
 //    }
 //  }
+  protected boolean initializeCommandHandle() {
+    boolean isInitialize = true;
+    
+    isInitialize &= this.InitializeCoreRuntimeEnvironmentModules();
+    // Initialize the runtime environment.
+    if(true == isInitialize && m_isDebug) {
+      logger.info("Finished initializing the runtime environment.");
+    }else if(m_isDebug) {
+      logger.error("Failed to initialize the runtime environment.");
+    }
+    
+    // Initialize Command Factory.
+    isInitialize &= this.InitializeCoreCommandFactoryModules();
+    if(true == isInitialize && m_isDebug) {
+      System.out.println("[INFO] " + "Finished initializing the command factory.");
+    }else if(m_isDebug) {
+      System.out.println("[ERROR] " + "Failed to initialize the command factory.");
+    }
+    
+    // Initialize Command Parameter Factory.
+    isInitialize &= this.InitializeCoreCommandFactoryParameterModules();
+    if(true == isInitialize && m_isDebug) {
+      System.out.println("[INFO] " + "Finished initializing the command parameter factory.");
+    }else if(m_isDebug) {
+      System.out.println("[ERROR] " + "Failed to initialize the command parameter factory.");
+    }
+    return isInitialize;
+  }
+  
+  /**
+   * Initialize the runtime environment of the kernel module.
+   * 
+   * <p>
+   * The runtime environment refers to the resources that the kernel module 
+   * depends on for automation. These resources may be a robot arm 
+   * or application instance objects.
+   * </p>
+   * 
+   * <table border="1" align="center" cellspacing="0" cellpadding="16" width="500">
+   *   <caption>Runtime Registration Form</caption>
+   *   <tr>
+   *     <th>KeyName    </th>
+   *     <th>Describe   </th>
+   *   </tr>
+   *   
+   *   <tr>
+   *     <td>RobotApplication</td>
+   *     <td>Robot application instance object.</td>
+   *   </tr>
+   * </table>
+   * 
+   * @see units.CommandProtocolFactory
+   */
+  protected boolean InitializeCoreRuntimeEnvironmentModules() {
+    boolean isInitialize = true;
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.RegisterRunTimeProperty(this);
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.RegisterRunTimeProperty(this.robot);
+    return isInitialize;
+  }
+
+  /**
+   * Initialize the command factory of the kernel module.
+   * 
+   * <p>
+   * The command factory is the manufacturer of the command entity object, and 
+   * the correct manufacturing target of the command factory The command entity 
+   * object requires a work instruction, which is accessed through the command 
+   * factory registration interface.
+   * </p>
+   * 
+   * <table border="1" align="center" cellspacing="0" cellpadding="16" width="500">
+   *   <caption>Runtime Registration Form</caption>
+   *   <tr>
+   *     <th>CommandName</th>
+   *     <th>Describe   </th>
+   *   </tr>
+   *   
+   *   <tr>
+   *     <td>MovePTP</td>
+   *     <td>Make the mechanical arm move a line, which is expressed by the starting 
+   *     point (generally the current point position of the mechanical arm) and the 
+   *     target point (the stop position of the mechanical arm).</td>
+   *   </tr>
+   * </table>
+   * 
+   * @see units.CommandFactory
+   */
+  protected boolean InitializeCoreCommandFactoryModules() {
+    boolean isInitialize = true;
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterProduct(testCommand);
+    //isInitialize &= this.m_commandHandler.commandFactory.RegisterProduct(new FreeHandler());
+    return isInitialize;
+  }
+
+  /**
+   * Initialize the command accessory parameter product of the kernel module.
+   * 
+   * <p>
+   * The parameter product is an accessory of the command product, and a command 
+   * product should correspond to a parameter accessory to assist the normal use 
+   * of the target function of the command product.
+   * </p>
+   * 
+   * <table border="1" align="center" cellspacing="0" cellpadding="16" width="500">
+   *   <caption>Runtime Registration Form</caption>
+   *   <tr>
+   *     <th>CommandName</th>
+   *     <th>CommandParameterName</th>
+   *     <th>Describe   </th>
+   *   </tr>
+   *   
+   *   <tr>
+   *     <td>MovePTP</td>
+   *     <td>MovePCommandProtocol</td>
+   *     <td>A line parameter represented by the starting point (usually the current 
+   *     point position of the manipulator) and the target point (the stop position 
+   *     of the manipulator).</td>
+   *   </tr>
+   * </table>
+   * 
+   * @see units.CommandProtocolFactory
+   */
+  protected boolean InitializeCoreCommandFactoryParameterModules() {
+    boolean isInitialize = true;
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("Test",new ProtocolBean());
+    //isInitialize &= this.m_commandHandlerRepeater.commandParameterFactory.RegisterParameter("FreeHandler", new BasicRobotCommandProtocol());
+    return isInitialize;
+  }
 }
