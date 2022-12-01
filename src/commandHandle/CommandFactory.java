@@ -31,7 +31,7 @@ public class CommandFactory {
      * 
      * @see units.AbstractCommand
      */
-    public boolean RegisterProduct(AbstractCommand command) {
+    public boolean RegisterCommand(AbstractCommand command) {
 
         if(null == command) {
             return false;

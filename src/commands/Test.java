@@ -4,7 +4,7 @@ import com.kuka.med.devicemodel.LBRMed;
 import com.kuka.task.ITaskLogger;
 import javax.inject.Inject;
 import protocols.GsonUtil;
-import protocols.ProtocolBean;
+import protocols.DefualtProtocol;
 import protocols.ProtocolResult;
 import units.AbstractCommand;
 import units.AbstractCommandEx;
@@ -20,7 +20,7 @@ public class Test extends AbstractCommandEx {
 
   @Override
   public ProtocolResult Execute(Object protocol) {
-    ProtocolBean p = (ProtocolBean) protocol;
+    DefualtProtocol p = (DefualtProtocol) protocol;
     logger.info(GsonUtil.jsonFormatter(GsonUtil.bean2Json(p)));
     logger.info("Execute command: " + p.getOperateType());
     logger.info(robot.getCurrentCartesianPosition(robot.getFlange()).getTransformationFromParent().toString());

@@ -36,7 +36,7 @@ import java.util.EnumSet;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import protocols.Param;
-import protocols.ProtocolBean;
+import protocols.DefualtProtocol;
 import protocols.ProtocolResult;
 //import com.kuka.common.ThreadUtil;
 //import com.kuka.med.deviceModel.LBRMed;
@@ -93,7 +93,7 @@ public class ProtocolProcess {
 	}
 	
 	public ProtocolResult checkStop() {
-		ProtocolBean msg = m_app.peekMsgBean();
+		DefualtProtocol msg = m_app.peekMsgBean();
 		if (msg != null && msg.getOperateType().equals("MoveStop")) {
 			mc.cancel();
 			m_app.getMsgBean();
@@ -104,7 +104,7 @@ public class ProtocolProcess {
 		return null;		
 	}
 	public ProtocolResult GetJointPos(){
-		ProtocolBean msg = m_app.peekMsgBean();
+		DefualtProtocol msg = m_app.peekMsgBean();
 		if(msg != null && msg.getOperateType().equals("GetJointPos")){
 			JointPosition jtPos = m_robot.getCurrentJointPosition();
 			Frame frm = m_robot.getCurrentCartesianPosition(m_robot.getFlange());
@@ -142,7 +142,7 @@ public class ProtocolProcess {
 		
 		return null;
 	}
-	public ProtocolResult ProcessData(ProtocolBean bean)
+	public ProtocolResult ProcessData(DefualtProtocol bean)
 	{
 		if (bean == null) {
 			log.info("bean null======");
@@ -527,7 +527,7 @@ public class ProtocolProcess {
 	}
 	
 	//鑴拌劥鑴拌剻闅嗗瀯楣胯寘鑴︾纰岄檰鎴纰岀洸鑴︾鑴拌剻
-	private ProtocolResult Reset(ProtocolBean bean)
+	private ProtocolResult Reset(DefualtProtocol bean)
 	{
 		/*JointPosition jp_02 = new JointPosition(0, 0, 0, Math.toRadians(90), 0, Math.toRadians(-90), 0);
 		
@@ -551,7 +551,7 @@ public class ProtocolProcess {
 		return m_freehandMotion.run();
 	}
 	
-	public ProtocolResult TestBrake(ProtocolBean bean)
+	public ProtocolResult TestBrake(DefualtProtocol bean)
 	{
 		if (m_brakeTestExecutor == null) return null;
 		

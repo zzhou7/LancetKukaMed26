@@ -1,6 +1,6 @@
 package protocols;
 
-public class ProtocolBean {
+public class DefualtProtocol {
 	private String operateType;
 	private Param param;
 	private Param param2;
@@ -38,6 +38,6 @@ public class ProtocolBean {
 	
 	/*@Override
 	public String toString() {
-		return "ProtocolBean [OperateType=" + OperateType + ", param=" + param.toString() + ", timestamp=" + timestamp + "]";
+		return "DefualtProtocol [OperateType=" + OperateType + ", param=" + param.toString() + ", timestamp=" + timestamp + "]";
 	}*/
 }

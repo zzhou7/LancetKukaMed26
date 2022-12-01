@@ -3,7 +3,7 @@ package commandHandle;
 import java.util.HashMap;
 import java.util.Map;
 import protocols.GsonUtil;
-import protocols.ProtocolBean;
+import protocols.DefualtProtocol;
 import units.AbstractCommandParameter;
 
 public class CommandProtocolFactory {

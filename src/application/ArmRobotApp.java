@@ -1,9 +1,7 @@
 package application;
 
 import com.kuka.device.common.JointPosition;
-import com.kuka.geometry.Frame;
 import com.kuka.geometry.LoadData;
-import com.kuka.geometry.ObjectFrame;
 import com.kuka.geometry.Tool;
 import com.kuka.geometry.World;
 import com.kuka.math.geometry.ITransformation;
@@ -13,11 +11,7 @@ import com.kuka.med.mastering.MedApplicationCategory;
 import com.kuka.motion.IMotionContainer;
 import com.kuka.roboticsAPI.applicationModel.IApplicationControl;
 import com.kuka.roboticsAPI.applicationModel.RoboticsAPIApplication;
-import com.kuka.roboticsAPI.applicationModel.RoboticsAPIApplicationControl;
-import com.kuka.roboticsAPI.conditionModel.BooleanIOCondition;
 import com.kuka.roboticsAPI.conditionModel.ConditionObserver;
-import com.kuka.roboticsAPI.conditionModel.IAnyEdgeListener;
-import com.kuka.roboticsAPI.conditionModel.NotificationType;
 import com.kuka.roboticsAPI.conditionModel.ObserverManager;
 import com.kuka.roboticsAPI.motionModel.ErrorHandlingAction;
 import com.kuka.roboticsAPI.motionModel.IMotionErrorHandler;
@@ -25,6 +19,11 @@ import com.kuka.roboticsAPI.uiModel.IApplicationUI;
 import com.kuka.task.ITaskLogger;
 import com.kuka.task.RoboticsAPITask;
 import commandHandle.CommandHandler;
+import commands.AddFrame;
+import commands.HandGuiding;
+import commands.MovePTP;
+import commands.MoveStop;
+import commands.SetMotionFrame;
 import commands.Test;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -34,17 +33,13 @@ import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.inject.Inject;
-import javax.inject.Named;
-import protocols.BasicRobotCommandProtocol;
+import protocols.DefualtProtocol;
 import protocols.GsonUtil;
-import protocols.MovePCommandProtocol;
-import protocols.ProtocolBean;
 import protocols.ProtocolResult;
 /**
  * Implementation of a robot application.
@@ -80,6 +75,11 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   
   //inject all available command
   @Inject private Test testCommand;
+  @Inject private MovePTP movePtpCommand;
+  @Inject private AddFrame addFrameCommand;
+  @Inject private SetMotionFrame setMotionFrameCommand;
+  @Inject private MoveStop moveStopCommand;
+  @Inject private HandGuiding handGuidingCommand;
   
   private BrakeTestHandler m_brakeTest = null;
   private boolean m_stop = false;
@@ -263,11 +263,11 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 
     try {
       while (!m_stop) {
-        //ProtocolBean msgBean = getMsgBean();
+        //DefualtProtocol msgBean = getMsgBean();
         String massage = getMsgBean();
         if (massage != null && !massage.isEmpty()) {
           logger.info("recv_getMsg: " + massage);
-          //msgBean = GsonUtil.json2Bean(line, ProtocolBean.class);
+          //msgBean = GsonUtil.json2Bean(line, DefualtProtocol.class);
           
           //pass massage string to command handler
           ProtocolResult result = this.m_commandHandler.PushCommandToHandler(massage);
@@ -340,15 +340,15 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     return massage;
   }
 
-  public ProtocolBean peekMsgBean() {
+  public DefualtProtocol peekMsgBean() {
     msgLock.readLock().lock();
     String line = msgQueque.peek();
     msgLock.readLock().unlock();
 
-    ProtocolBean msgBean = null;
+    DefualtProtocol msgBean = null;
     if (line != null && !line.isEmpty()) {
       logger.info("recv_peekMsg: " + line);
-      msgBean = GsonUtil.json2Bean(line, ProtocolBean.class);
+      msgBean = GsonUtil.json2Bean(line, DefualtProtocol.class);
     }
     return msgBean;
   }
@@ -423,7 +423,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     }
     
     // Initialize Command Factory.
-    isInitialize &= this.InitializeCoreCommandFactoryModules();
+    isInitialize &= this.InitCommandFactory();
     if(true == isInitialize && m_isDebug) {
       System.out.println("[INFO] " + "Finished initializing the command factory.");
     }else if(m_isDebug) {
@@ -431,7 +431,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     }
     
     // Initialize Command Parameter Factory.
-    isInitialize &= this.InitializeCoreCommandFactoryParameterModules();
+    isInitialize &= this.InitCommandProtocolFactory();
     if(true == isInitialize && m_isDebug) {
       System.out.println("[INFO] " + "Finished initializing the command parameter factory.");
     }else if(m_isDebug) {
@@ -498,10 +498,14 @@ public class ArmRobotApp extends RoboticsAPIApplication {
    * 
    * @see units.CommandFactory
    */
-  protected boolean InitializeCoreCommandFactoryModules() {
+  protected boolean InitCommandFactory() {
     boolean isInitialize = true;
-    isInitialize &= this.m_commandHandler.commandFactory.RegisterProduct(testCommand);
-    //isInitialize &= this.m_commandHandler.commandFactory.RegisterProduct(new FreeHandler());
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(testCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(movePtpCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(moveStopCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(addFrameCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(setMotionFrameCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(handGuidingCommand);
     return isInitialize;
   }
 
@@ -533,10 +537,14 @@ public class ArmRobotApp extends RoboticsAPIApplication {
    * 
    * @see units.CommandProtocolFactory
    */
-  protected boolean InitializeCoreCommandFactoryParameterModules() {
+  protected boolean InitCommandProtocolFactory() {
     boolean isInitialize = true;
-    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("Test",new ProtocolBean());
-    //isInitialize &= this.m_commandHandlerRepeater.commandParameterFactory.RegisterParameter("FreeHandler", new BasicRobotCommandProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("Test",new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("MovePTP", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("AddFrame", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("SetMotionFrame", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("HandGuiding", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("MoveStop", new DefualtProtocol());
     return isInitialize;
   }
 }
