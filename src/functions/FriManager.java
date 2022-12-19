@@ -77,8 +77,14 @@ public class FriManager {
     logger.info("Close fri session to client");
 
     if (null != m_friSession) {
-      m_friSession.close();
+      try {
+        m_friSession.close();
+        world.removeFrame(m_friFrame);
+      }catch(Exception e) {
+        e.getLocalizedMessage();
+      }
+      
     }
-    world.removeFrame(m_friFrame);
+    
   }
 }
