@@ -58,7 +58,7 @@ public class FriManager {
 
     try
     {
-      m_friSession.await(10, TimeUnit.SECONDS);
+      m_friSession.await(20, TimeUnit.SECONDS);
     }
     catch (TimeoutException e)
     {

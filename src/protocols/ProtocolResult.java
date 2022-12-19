@@ -2,9 +2,9 @@ package protocols;
 
 public class ProtocolResult {
 	private int resultCode;
-	private String resultMsg;
-	private String operateType;
-	private Param param;
+	private String resultMsg = "null";
+	private String operateType = "null";
+	private Param param = new Param();
 	
 	public String getOperateType() {
 		return operateType;

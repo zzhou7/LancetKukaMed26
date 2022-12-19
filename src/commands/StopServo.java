@@ -16,7 +16,6 @@ public class StopServo extends AbstractCommandEx {
   @Inject private LBRMed robot;
   @Inject private ITaskLogger logger;
   @Inject private World world;
-  @Inject private FriManager friManager;
   @Inject private ServoMode servoMode;
   @Override
   public String GetNameString() {
@@ -34,7 +33,6 @@ public class StopServo extends AbstractCommandEx {
     
     try {
       servoMode.exitMode();
-      friManager.close(); 
     } catch (Exception e) {
       logger.error("stop servo error");
       logger.error(e.toString());

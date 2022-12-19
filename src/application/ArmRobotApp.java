@@ -66,6 +66,7 @@ import protocols.ProtocolResult;
 @MedApplicationCategory(checkMastering = false)
 public class ArmRobotApp extends RoboticsAPIApplication {
   private boolean m_isDebug = false;
+  private boolean m_isConnected = false;
   @Inject private LBRMed robot;
   @Inject private World world;
   //@Named("Tool")
@@ -117,8 +118,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
 		
-		friManager.setClientName("172.31.1.148");
-		friManager.initialize();
+		
 		
 		//initialize commandHandle
 		this.initializeCommandHandle();
@@ -202,6 +202,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   }
 
   public void ReConnect() {
+    m_isConnected = false;
     try {
       SocketAddress address = new InetSocketAddress("172.31.1.148", 30009);
       logger.info("ReConnect Peer ===== ");
@@ -215,10 +216,23 @@ public class ArmRobotApp extends RoboticsAPIApplication {
           m_socket.getInputStream()));
       m_writer = new OutputStreamWriter(new DataOutputStream(
           m_socket.getOutputStream()));
-
     } catch (Exception ex) {
       logger.error(ex.toString());
+      m_isConnected = false;
     }
+    //fri
+    try {
+    
+      friManager.setClientName("172.31.1.148");
+      friManager.initialize();
+      //start fri session so that friDynamicFrame will be update
+      friManager.startFriSession();
+    } catch(Exception ex){
+      logger.error(ex.toString());
+      m_isConnected = false;
+    }
+    m_isConnected = true;
+    
   }
 
   @Override
@@ -239,14 +253,14 @@ public class ArmRobotApp extends RoboticsAPIApplication {
           String line = new String();
           try {
             long timeOut = System.currentTimeMillis() - oldTime;
-            if (0 != oldTime && timeOut > 5 * 1000) {
+            if (!m_isConnected || timeOut > 5 * 1000) {
               logger.info("timeOut  " + String.valueOf(timeOut));
               tool.detachChildren(); // detach all frames, When reconnect server will addFrame again
               ReConnect();
               Thread.sleep(3000);
-              if (m_socket.isConnected()) {
-                oldTime = 0;
-              }
+//              if (m_socket.isConnected()) {
+//                oldTime = 0;
+//              }
             }
             if (m_reader != null && m_reader.ready()) {
               line = m_reader.readLine();

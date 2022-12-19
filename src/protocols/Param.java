@@ -1,7 +1,7 @@
 package protocols;
 
 public class Param {
-	public String target;
+	public String target = "null";
 	public double x;
 	public double y;
 	public double z;

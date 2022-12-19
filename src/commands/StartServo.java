@@ -32,6 +32,7 @@ public class StartServo extends AbstractCommandEx {
   @Inject private ServoMode servoMode;
   
   private boolean m_debug = false;
+  private boolean m_isOffset = false;
   private Tool tool;
   
   @Override
@@ -55,31 +56,32 @@ public class StartServo extends AbstractCommandEx {
     // This timing can be configured by the user
     servoMode.initialize();
     servoMode.enterMode();
-    
-    //start fri session so that friDynamicFrame will be update
-    friManager.startFriSession();
-    
+ 
     Thread thrd = new Thread(new Runnable() {
       @Override
       public void run() {
         try {
           while (servoMode.isModeOn()) {
-            Frame offset = friManager.GetFriDynamicFrame();
-            
-            logger.info("initialPos");
-            logger.info(initialPosition.toString());
-            
-            Frame destFrame = LocalFrame.copyOfWithRedundancy(initialPosition, initialPosition.getParent());
-            
-            Vector3D v = offset.getTransformationFromParent().getTranslation();
-            destFrame.translate(v);
-            logger.info("offset");
-            logger.info(v.toString());
-            logger.info("destFrame");
-            logger.info(destFrame.toString());
+            if(m_isOffset) {
+              Frame offset = friManager.GetFriDynamicFrame();
+              
+//              logger.info("initialPos");
+//              logger.info(initialPosition.toString());
+              
+              Frame destFrame = LocalFrame.copyOfWithRedundancy(initialPosition, initialPosition.getParent());
+              
+              Vector3D v = offset.getTransformationFromParent().getTranslation();
+              destFrame.translate(v);
+//              logger.info("offset");
+//              logger.info(v.toString());
+//              logger.info("destFrame");
+//              logger.info(destFrame.toString());
 
-            servoMode.setNewDestination(destFrame);   
-            
+              servoMode.setNewDestination(destFrame);  
+            } else {
+              Frame destFrame = friManager.GetFriDynamicFrame();
+              servoMode.setNewDestination(destFrame);  
+            } 
             if(m_debug) {
               servoMode.printDebugData();
             }
@@ -87,8 +89,7 @@ public class StartServo extends AbstractCommandEx {
         } catch (Exception e) {
           logger.error("servo setNewDestination error,exit mode and close fri session");
           logger.error(e.toString());
-          servoMode.exitMode();
-          friManager.close();        
+          servoMode.exitMode();      
         }
       }
     });
