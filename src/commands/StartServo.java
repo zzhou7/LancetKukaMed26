@@ -61,7 +61,7 @@ public class StartServo extends AbstractCommandEx {
       @Override
       public void run() {
         try {
-          while (servoMode.isModeOn()) {
+          while (servoMode.isModeOn() && friManager.isConnected()) {
             if(m_isOffset) {
               Frame offset = friManager.GetFriDynamicFrame();
               
@@ -93,6 +93,7 @@ public class StartServo extends AbstractCommandEx {
           logger.error(e.toString());
           servoMode.exitMode();      
         }
+        
       }
     });
     thrd.start(); 

@@ -21,6 +21,7 @@ public class FriManager {
   private FRISession m_friSession; 
   private ObjectFrame m_friFrame;
   private FRIConfiguration m_friConfiguration;
+  private boolean m_isConnected = false;
   @Inject private ITaskLogger logger; 
   @Inject private LBRMed robot;
   @Inject private World world;
@@ -58,6 +59,7 @@ public class FriManager {
     { 
       m_friSession = new FRISession(m_friConfiguration);
       m_friSession.await(20, TimeUnit.SECONDS);
+      m_isConnected = true;
     }
     catch (TimeoutException e)
     {
@@ -73,9 +75,13 @@ public class FriManager {
     return m_friFrame;
   }
   
+  public boolean isConnected() {
+    return m_isConnected;
+  }
+  
   public void close() {
     logger.info("Close fri session to client");
-
+    m_isConnected = false;
     if (null != m_friSession) {
       try {
         m_friSession.close();
