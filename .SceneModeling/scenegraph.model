@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <core:World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.kuka.com/rapi2/geometry/core" xmlns:objectparameters="http://www.kuka.com/rapi2/objectParameters" id="_8GmbsGY7Ee2AwJ_VYXOlcw" name="World" lastModificationTime="2022-11-25T18:37:56.193+0800" defaultChildAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw" defaultParentAttachmentFrame="_8Gl0oWY7Ee2AwJ_VYXOlcw">
   <rootFrame id="_8Gl0oWY7Ee2AwJ_VYXOlcw" name="ROOT" lastModificationTime="2022-11-17T13:51:54.091+0800">
-    <childFrames id="57424448-391b-4eb0-aadb-5f7dad5434cd" name="FriDynamicFrame">
+    <childFrames id="e9ba1cdd-5424-4853-8241-06abc195ec22" name="FriDynamicFrame">
       <parentFrameConnection xsi:type="core:StaticFrameConnection">
         <transformation/>
       </parentFrameConnection>
@@ -17,12 +17,23 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+      <childObjectConnections childObjectFrame="e15c8198-f4e9-4f61-973a-ffe874834946" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
         <frameConnection xsi:type="core:StaticFrameConnection">
           <transformation/>
         </frameConnection>
-        <childObject xsi:type="core:Tool" id="1afd2308-e2ea-419e-94d5-f0939c23fefc" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" defaultParentAttachmentFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" transient="true" defaultMotionFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96">
-          <rootFrame id="c7e82c14-16e8-40e0-a895-6e3b671fda96" name="ROOT"/>
+        <childObject xsi:type="core:Tool" id="f2250816-92c4-404c-9492-93077241f8c4" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="e15c8198-f4e9-4f61-973a-ffe874834946" defaultParentAttachmentFrame="e15c8198-f4e9-4f61-973a-ffe874834946" transient="true" defaultMotionFrame="e15c8198-f4e9-4f61-973a-ffe874834946">
+          <rootFrame id="e15c8198-f4e9-4f61-973a-ffe874834946" name="ROOT">
+            <childFrames id="76305578-9e9d-486a-8bea-ffca659b9467" name="Flange">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+            <childFrames id="3059b9dd-ab33-48dc-9ab3-d114fccdbe1f" name="RobotEndRF_robot">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation x="24.8229" y="-73.4737" z="64.2855" alphaRad="3.11709" betaRad="-0.00184905" gammaRad="3.12414"/>
+              </parentFrameConnection>
+            </childFrames>
+          </rootFrame>
           <loadData mass="2.37">
             <centerOfMass x="-8.06" y="-28.07" z="90.56"/>
             <inertia/>
