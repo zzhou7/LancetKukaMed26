@@ -17,12 +17,23 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+      <childObjectConnections childObjectFrame="68b97c88-8e11-4636-8970-be0e331da673" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
         <frameConnection xsi:type="core:StaticFrameConnection">
           <transformation/>
         </frameConnection>
-        <childObject xsi:type="core:Tool" id="1afd2308-e2ea-419e-94d5-f0939c23fefc" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" defaultParentAttachmentFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96" transient="true" defaultMotionFrame="c7e82c14-16e8-40e0-a895-6e3b671fda96">
-          <rootFrame id="c7e82c14-16e8-40e0-a895-6e3b671fda96" name="ROOT"/>
+        <childObject xsi:type="core:Tool" id="a8049b10-6bc3-45d8-87c5-39c4113dad61" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="68b97c88-8e11-4636-8970-be0e331da673" defaultParentAttachmentFrame="68b97c88-8e11-4636-8970-be0e331da673" transient="true" defaultMotionFrame="68b97c88-8e11-4636-8970-be0e331da673">
+          <rootFrame id="68b97c88-8e11-4636-8970-be0e331da673" name="ROOT">
+            <childFrames id="ee8792c0-5034-42bb-8ffb-c3c5dfb7fd83" name="Flange">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+            <childFrames id="dbbad803-d856-46fe-a3fe-4d2fc9ac7703" name="RobotEndRF_robot">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation x="24.8229" y="-73.4737" z="64.2855" alphaRad="3.11709" betaRad="-0.00184905" gammaRad="3.12414"/>
+              </parentFrameConnection>
+            </childFrames>
+          </rootFrame>
           <loadData mass="2.37">
             <centerOfMass x="-8.06" y="-28.07" z="90.56"/>
             <inertia/>
