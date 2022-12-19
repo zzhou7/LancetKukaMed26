@@ -54,10 +54,9 @@ public class FriManager {
   }
   
   public void startFriSession() {
-    m_friSession = new FRISession(m_friConfiguration);
-
     try
-    {
+    { 
+      m_friSession = new FRISession(m_friConfiguration);
       m_friSession.await(20, TimeUnit.SECONDS);
     }
     catch (TimeoutException e)
