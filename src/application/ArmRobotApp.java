@@ -20,6 +20,8 @@ import com.kuka.task.ITaskLogger;
 import com.kuka.task.RoboticsAPITask;
 import commandHandle.CommandHandler;
 import commands.AddFrame;
+import commands.BrakeTest;
+import commands.CartesianImpedanceControl;
 import commands.HandGuiding;
 import commands.MovePTP;
 import commands.MoveStop;
@@ -87,6 +89,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private HandGuiding handGuidingCommand;
   @Inject private StartServo startServoCommand;
   @Inject private StopServo stopServoCommand;
+  @Inject private BrakeTest brakeTestCommand;
+  @Inject private CartesianImpedanceControl cartesianImpedanceControlCommand;
   
   private BrakeTestHandler m_brakeTest = null;
   private boolean m_stop = false;
@@ -526,6 +530,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(handGuidingCommand);
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(startServoCommand);
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(stopServoCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(cartesianImpedanceControlCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(brakeTestCommand);
     return isInitialize;
   }
 
@@ -567,6 +573,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("MoveStop", new DefualtProtocol());
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("StartServo", new DefualtProtocol());
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("StopServo", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("CartesianImpedanceControl", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("BrakeTest", new DefualtProtocol());
     return isInitialize;
   }
 }
