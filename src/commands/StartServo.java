@@ -81,8 +81,8 @@ public class StartServo extends AbstractCommandEx {
             } else {
               Frame destFrame = friManager.GetFriDynamicFrame();
               servoMode.setNewDestination(destFrame);  
-            logger.info("destFrame");
-            logger.info(destFrame.toString());
+//            logger.info("destFrame");
+//            logger.info(destFrame.toString());
             } 
             if(m_debug) {
               servoMode.printDebugData();
