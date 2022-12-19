@@ -2,7 +2,6 @@ package commands;
 
 import static com.kuka.roboticsAPI.motionModel.BasicMotions.ptp;
 
-import com.kuka.geometry.Frame;
 import com.kuka.geometry.LocalFrame;
 import com.kuka.geometry.World;
 import com.kuka.math.geometry.ITransformation;
@@ -43,21 +42,9 @@ public class MovePTP extends AbstractCommandEx {
     if (motionManager.getMotionContainer() != null) { 
       motionManager.getMotionContainer().cancel();
     }
-    
     Param param =p.getParam();
     ITransformation tans = Transformation.ofRad(param.x,param.y,param.z,param.a,param.b,param.c);
     LocalFrame target = new LocalFrame(world.getRootFrame(),tans);
-    
-//    Frame cmdPos = robot.getCurrentCartesianPosition(target);
-//    cmdPos = robot.getCurrentCartesianPosition(world.getRootFrame());
-//    Frame cmdPos2 = robot.getCurrentCartesianPosition(robot.getFlange());
-//    cmdPos2.setX(0);
-//    cmdPos2.setY(0);
-//    cmdPos2.setZ(0);
-//    cmdPos2.setAlphaRad(0);
-//    cmdPos2.setBetaRad(Math.toRadians(-30));
-//    cmdPos2.setGammaRad(0);
-//    cmdPos=robot.getCurrentCartesianPosition(world.getRootFrame(), cmdPos2);
     
     IMotionContainer mc = robot.moveAsync(ptp(target)
         .setJointVelocityRel(0.05).setJointAccelerationRel(0.02));

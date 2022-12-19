@@ -1,8 +1,6 @@
 package application;
 
 import com.kuka.device.common.JointPosition;
-import com.kuka.generated.io.MytestIOIoGroup;
-import com.kuka.geometry.Frame;
 import com.kuka.geometry.LoadData;
 import com.kuka.geometry.Tool;
 import com.kuka.geometry.World;
@@ -22,12 +20,14 @@ import com.kuka.task.ITaskLogger;
 import com.kuka.task.RoboticsAPITask;
 import commandHandle.CommandHandler;
 import commands.AddFrame;
-import commands.CartesianImpedanceControl;
 import commands.HandGuiding;
 import commands.MovePTP;
 import commands.MoveStop;
 import commands.SetMotionFrame;
+import commands.StartServo;
+import commands.StopServo;
 import commands.Test;
+import functions.FriManager;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -75,6 +75,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private IApplicationUI appUI;
   @Inject private IApplicationControl appControl;
   @Inject private ObserverManager observerManager;
+  @Inject private FriManager friManager;
   
   //inject all available command
   @Inject private Test testCommand;
@@ -83,9 +84,9 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private SetMotionFrame setMotionFrameCommand;
   @Inject private MoveStop moveStopCommand;
   @Inject private HandGuiding handGuidingCommand;
-  @Inject private CartesianImpedanceControl CartesianImpedanceControlCommand;
-  @Inject private CartesianImpedanceControl BrakeTestCommand;
-  @Inject private MytestIOIoGroup io;
+  @Inject private StartServo startServoCommand;
+  @Inject private StopServo stopServoCommand;
+  
   private BrakeTestHandler m_brakeTest = null;
   private boolean m_stop = false;
   public boolean isSendMaster = false;
@@ -99,24 +100,25 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   private LinkedList<String> msgQueque = new LinkedList<String>();
   private ReadWriteLock msgLock = new ReentrantReadWriteLock();
   private CommandHandler m_commandHandler = new CommandHandler();
-  
   @Override
 	public void initialize() {	
     //detach all tools
     robot.detachChildren();
-    io.setOutput1(false);
     //clean frames in world
     
 		//mastering = new Mastering(robot);
-		ITransformation tans = Transformation.ofDeg(0, 0, 20, 0, 0, 0);
+		ITransformation tans = Transformation.ofDeg(-8.06, -28.07, 90.56, 0, 0, 0);
 		
 		//create default tool and attach to flange
 		LoadData loadRobot =  new LoadData();
 		loadRobot.setCenterOfMass(tans);
-		loadRobot.setMass(0.676);
+		loadRobot.setMass(2.37);
 		tool = new Tool("tool", loadRobot);
 		logger.info(tool.getLoadData().toString());
 		tool.attachTo(robot.getFlange());  
+		
+		friManager.setClientName("172.31.1.148");
+		friManager.initialize();
 		
 		//initialize commandHandle
 		this.initializeCommandHandle();
@@ -228,6 +230,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     m_processer.setApp(this);
     m_socket = new Socket();
     ReConnect();
+
     Thread thrd = new Thread(new Runnable() {
       @Override
       public void run() {
@@ -512,8 +515,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(addFrameCommand);
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(setMotionFrameCommand);
     isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(handGuidingCommand);
-    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(CartesianImpedanceControlCommand);
-    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(BrakeTestCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(startServoCommand);
+    isInitialize &= this.m_commandHandler.commandFactory.RegisterCommand(stopServoCommand);
     return isInitialize;
   }
 
@@ -553,8 +556,8 @@ public class ArmRobotApp extends RoboticsAPIApplication {
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("SetMotionFrame", new DefualtProtocol());
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("HandGuiding", new DefualtProtocol());
     isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("MoveStop", new DefualtProtocol());
-    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("CartesianImpedanceControl", new DefualtProtocol());
-    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("BrakeTestControl", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("StartServo", new DefualtProtocol());
+    isInitialize &= this.m_commandHandler.commandProtocolFactory.registerProtocol("StopServo", new DefualtProtocol());
     return isInitialize;
   }
 }
