@@ -11,12 +11,18 @@
           <parentFrameConnection xsi:type="core:DynamicFrameConnection"/>
         </childFrames>
       </rootFrame>
-      <childObjectConnections childObjectFrame="ada52c9a-ce78-43f5-b6a4-9a1ccf52791f" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
+      <childObjectConnections childObjectFrame="a51d3689-818c-4040-bda3-156680134b69" parentObjectFrame="_8GwMsmY7Ee2AwJ_VYXOlcw">
         <frameConnection xsi:type="core:StaticFrameConnection">
           <transformation/>
         </frameConnection>
-        <childObject xsi:type="core:Tool" id="168048c3-fa03-4ba2-98dc-9f0e02c9569d" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="ada52c9a-ce78-43f5-b6a4-9a1ccf52791f" defaultParentAttachmentFrame="ada52c9a-ce78-43f5-b6a4-9a1ccf52791f" transient="true" defaultMotionFrame="ada52c9a-ce78-43f5-b6a4-9a1ccf52791f">
-          <rootFrame id="ada52c9a-ce78-43f5-b6a4-9a1ccf52791f" name="ROOT"/>
+        <childObject xsi:type="core:Tool" id="72411eab-e61f-42cb-9e01-e9cb6348f024" name="tool" clazz="com.kuka.geometry.Tool" defaultChildAttachmentFrame="a51d3689-818c-4040-bda3-156680134b69" defaultParentAttachmentFrame="a51d3689-818c-4040-bda3-156680134b69" transient="true" defaultMotionFrame="a51d3689-818c-4040-bda3-156680134b69">
+          <rootFrame id="a51d3689-818c-4040-bda3-156680134b69" name="ROOT">
+            <childFrames id="6cfe62e2-737d-4881-9654-323796528936" name="Flange">
+              <parentFrameConnection xsi:type="core:StaticFrameConnection">
+                <transformation/>
+              </parentFrameConnection>
+            </childFrames>
+          </rootFrame>
           <loadData mass="0.676">
             <centerOfMass z="20.0"/>
             <inertia/>
