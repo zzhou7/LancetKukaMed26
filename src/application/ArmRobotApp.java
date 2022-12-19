@@ -104,7 +104,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 	public void initialize() {	
     //detach all tools
     robot.detachChildren();
-    io.setOutput1(true);
+    io.setOutput1(false);
     //clean frames in world
     
 		//mastering = new Mastering(robot);
