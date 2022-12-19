@@ -217,7 +217,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
       m_writer = new OutputStreamWriter(new DataOutputStream(
           m_socket.getOutputStream()));
   
-    
+      friManager.close();
       friManager.setClientName("172.31.1.148");
       friManager.initialize();
       //start fri session so that friDynamicFrame will be update
