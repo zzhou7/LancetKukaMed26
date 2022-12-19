@@ -4,6 +4,9 @@ import static com.kuka.handguiding.motion.HRCMotions.handGuiding;
 
 import com.kuka.geometry.World;
 import com.kuka.med.devicemodel.LBRMed;
+import com.kuka.med.lbrmed.precisehandguiding.api.IPreciseHandguiding;
+import com.kuka.med.lbrmed.precisehandguiding.api.IPreciseHandguidingMotion;
+import com.kuka.motion.IMotionContainer;
 import com.kuka.task.ITaskLogger;
 import javax.inject.Inject;
 import protocols.ProtocolResult;
@@ -26,7 +29,16 @@ public class HandGuiding extends AbstractCommandEx {
 
   @Override
   public ProtocolResult Execute(Object protocol) {
-    robot.move(handGuiding().setJointLimitViolationFreezesAll(false));
+    
+    IPreciseHandguiding phCapability =robot.getCapability(IPreciseHandguiding.class);
+    IPreciseHandguidingMotion handguidingMotion = phCapability.createMotion();
+    IMotionContainer mc = robot.move(handguidingMotion);
+    
+    
+//    robot.move(handGuiding().setJointLimitViolationFreezesAll(false));
+//    
+//
+//    
     
     ProtocolResult ret = new ProtocolResult();
     ret.setOperateType("HandGuiding");   
