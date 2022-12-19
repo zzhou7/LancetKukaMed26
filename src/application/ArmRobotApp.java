@@ -1,6 +1,7 @@
 package application;
 
 import com.kuka.device.common.JointPosition;
+import com.kuka.generated.io.MytestIOIoGroup;
 import com.kuka.geometry.Frame;
 import com.kuka.geometry.LoadData;
 import com.kuka.geometry.Tool;
@@ -84,6 +85,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
   @Inject private HandGuiding handGuidingCommand;
   @Inject private CartesianImpedanceControl CartesianImpedanceControlCommand;
   @Inject private CartesianImpedanceControl BrakeTestCommand;
+  @Inject private MytestIOIoGroup io;
   private BrakeTestHandler m_brakeTest = null;
   private boolean m_stop = false;
   public boolean isSendMaster = false;
@@ -102,6 +104,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
 	public void initialize() {	
     //detach all tools
     robot.detachChildren();
+    io.setOutput1(true);
     //clean frames in world
     
 		//mastering = new Mastering(robot);
