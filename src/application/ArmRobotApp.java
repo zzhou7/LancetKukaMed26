@@ -216,12 +216,7 @@ public class ArmRobotApp extends RoboticsAPIApplication {
           m_socket.getInputStream()));
       m_writer = new OutputStreamWriter(new DataOutputStream(
           m_socket.getOutputStream()));
-    } catch (Exception ex) {
-      logger.error(ex.toString());
-      m_isConnected = false;
-    }
-    //fri
-    try {
+  
     
       friManager.setClientName("172.31.1.148");
       friManager.initialize();
